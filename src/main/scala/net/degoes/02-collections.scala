@@ -87,6 +87,56 @@ object Collections extends DefaultRunnableSpec {
             def list2: List[Even] = list1.collect(???)
 
             assertTrue(list2 == List(Even(0), Even(0), Even(2)))
+          } @@ ignore +
+          /**
+           * EXERCISE
+           *
+           * Use `partition` to partition the provided list of integers into
+           * those that are even, and those that are odd.
+           */
+          test("partition") {
+            val isEven = (i: Int) => i % 2 == 0
+
+            val _ = isEven
+
+            val list = List(0, 3, 0, 2, 1)
+
+            val (even, odd) = list.partition(_ => ???)
+
+            assertTrue(even == List(0, 0, 2) && odd == List(3, 1))
+          } @@ ignore +
+          /**
+           * EXERCISE
+           *
+           * Use `reduceOption` to sum up both of the provided lists. In what
+           * cases does `reduceOption` return `None`?
+           */
+          test("reduceOption") {
+            val list1: List[Int] = List()
+            val list2: List[Int] = List(1, 2, 3)
+
+            val _ = list1
+            val _ = list2
+
+            def summedList1: Option[Int] = ???
+            def summedList2: Option[Int] = ???
+
+            assertTrue(summedList1 == None && summedList2 == Some(6))
+          } @@ ignore +
+          /**
+           * EXERCISE
+           *
+           * Use `List#find` to find the first number that is greater than
+           * two in the provided list.
+           */
+          test("find") {
+            val list = List(1, 2, 3, 4)
+
+            val _ = list
+
+            def firstGreaterThan2: Option[Int] = ???
+
+            assertTrue(firstGreaterThan2 == Some(3))
           } @@ ignore
       }
     }
