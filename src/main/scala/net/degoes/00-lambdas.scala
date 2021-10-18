@@ -107,7 +107,7 @@ object Lambdas extends DefaultRunnableSpec {
           /**
            * EXERCISE
            *
-           * Use `Function.const` to create a function that always returns 43,
+           * Use `Function.const` to create a function that always returns 42,
            * regardless of whichever string argument is passed.
            */
           test("const") {

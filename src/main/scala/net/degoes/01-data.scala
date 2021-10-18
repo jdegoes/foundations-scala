@@ -30,17 +30,33 @@ object Data extends DefaultRunnableSpec {
         /**
          * EXERCISE
          *
-         * Create a Person case class with a name (String) and an age (Int),
-         * and delete the fake constructor to observe the free constructor that
-         * all case classes receive in their companion objects.
+         * Create a Person case class to get free getters (fields) for all the
+         * constructor parameters of the class.
          */
-        test("apply") {
-          object Person {
-            def apply(name: String, age: Int) = ???
-          }
+        test("fields") {
+          class Person(name: String, age: Int)
 
-          assertTrue(Person("Sherlock Holmes", 42) == Person("Sherlock Holmes", 42))
+          def getName(p: Person): String = ???
+          def getAge(p: Person): Int     = ???
+
+          val holmes = new Person("Sherlock Holmes", 42)
+
+          assertTrue(getName(holmes) == "Sherlock Holmes" && getAge(holmes) == 42)
         } @@ ignore +
+          /**
+           * EXERCISE
+           *
+           * Create a Person case class with a name (String) and an age (Int),
+           * and delete the fake constructor to observe the free constructor that
+           * all case classes receive in their companion objects.
+           */
+          test("apply") {
+            object Person {
+              def apply(name: String, age: Int) = ???
+            }
+
+            assertTrue(Person("Sherlock Holmes", 42) == Person("Sherlock Holmes", 42))
+          } @@ ignore +
           /**
            * EXERCISE
            *
