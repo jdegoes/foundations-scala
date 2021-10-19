@@ -153,6 +153,21 @@ object Data extends DefaultRunnableSpec {
               /**
                * EXERCISE
                *
+               * Using multiple ordered case clauses in a pattern match,
+               * implement the provided function so it returns "Knows Holmes"
+               * if provided any address on "Baker" street, and "Unknown"
+               * otherwise.
+               */
+              test("ordered") {
+                final case class Address(number: String, street: String, postalCode: String)
+
+                def neighbor(address: Address): String = ???
+
+                assertTrue(neighbor(Address("220", "Baker", "NW1 6XE")) == "Knows Holmes")
+              } @@ ignore +
+              /**
+               * EXERCISE
+               *
                * Using conditional patterns, implement the provided function so
                * that it returns true for any street that contains "Baker".
                */

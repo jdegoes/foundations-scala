@@ -71,6 +71,58 @@ object Collections extends DefaultRunnableSpec {
           /**
            * EXERCISE
            *
+           * Use `List#take` to take the first 2 elements of the provided
+           * list.
+           */
+          test("take") {
+            val list1 = List(1, 2, 3, 4)
+
+            val list2 = list1
+
+            assertTrue(list2 == List(1, 2))
+          } @@ ignore +
+          /**
+           * EXERCISE
+           *
+           * Use `List#takeWhile` to take elements for as long as they are
+           * strictly less than 3.
+           */
+          test("takeWhile") {
+            val list1 = List(1, 2, 0, 3, 1, 2)
+
+            val list2 = list1
+
+            assertTrue(list2 == List(1, 2, 0))
+          } @@ ignore +
+          /**
+           * EXERCISE
+           *
+           * Use `List#drop` to drop the first 2 elements of the provided
+           * list.
+           */
+          test("drop") {
+            val list1 = List(1, 2, 3, 4)
+
+            val list2 = list1
+
+            assertTrue(list2 == List(3, 4))
+          } @@ ignore +
+          /**
+           * EXERCISE
+           *
+           * Use `List#dropWhile` to drop elements for as long as they are
+           * strictly less than 3.
+           */
+          test("dropWhile") {
+            val list1 = List(1, 2, 0, 3, 1, 2)
+
+            val list2 = list1
+
+            assertTrue(list2 == List(3, 1, 2))
+          } @@ ignore +
+          /**
+           * EXERCISE
+           *
            * Using `List#collect` and a partial function, collect all even
            * numbers from the provided List, wrapping them into an `Even`
            * wrapper type.
@@ -91,7 +143,7 @@ object Collections extends DefaultRunnableSpec {
           /**
            * EXERCISE
            *
-           * Use `partition` to partition the provided list of integers into
+           * Using `partition`, partition the provided list of integers into
            * those that are even, and those that are odd.
            */
           test("partition") {
@@ -108,7 +160,7 @@ object Collections extends DefaultRunnableSpec {
           /**
            * EXERCISE
            *
-           * Use `reduceOption` to sum up both of the provided lists. In what
+           * Using `reduceOption`, sum up both of the provided lists. In what
            * cases does `reduceOption` return `None`?
            */
           test("reduceOption") {
@@ -126,7 +178,7 @@ object Collections extends DefaultRunnableSpec {
           /**
            * EXERCISE
            *
-           * Use `List#find` to find the first number that is greater than
+           * Using `List#find`, find the first number that is greater than
            * two in the provided list.
            */
           test("find") {
@@ -137,7 +189,234 @@ object Collections extends DefaultRunnableSpec {
             def firstGreaterThan2: Option[Int] = ???
 
             assertTrue(firstGreaterThan2 == Some(3))
-          } @@ ignore
-      }
+          } @@ ignore +
+          /**
+           * EXERCISE
+           *
+           * Using `List#exists`, test to see if there exists an element of
+           * the list that is negative.
+           */
+          test("exists") {
+            val list = List(1, 2, 3, 4, -1)
+
+            val _ = list
+
+            def existsNegative: Boolean = ???
+
+            assertTrue(existsNegative)
+          } @@ ignore +
+          /**
+           * EXERCISE
+           *
+           * Using `List#forall`, test to see if all elements of the list
+           * are even numbers.
+           */
+          test("forall") {
+            val isEven = (i: Int) => i % 2 == 0
+
+            val _ = isEven
+
+            val list = List(0, 2, 6, 8, 12, 10)
+
+            val _ = list
+
+            def forallEven: Boolean = ???
+
+            assertTrue(forallEven)
+          } @@ ignore +
+          suite("folds") {
+
+            /**
+             * EXERCISE
+             *
+             * Using `List#foldLeft`, compute the sum of a list.
+             */
+            test("sum") {
+              def sum(list: List[Int]): Int = ???
+
+              assertTrue(sum(List(1, 2, 3, 4, 5)) == 15)
+            } @@ ignore +
+              /**
+               * EXERCISE
+               *
+               * Using `List#foldLeft`, compute the maximum element of a list.
+               */
+              test("max") {
+                def max(list: List[Int]): Int = ???
+
+                assertTrue(max(List(1, 7, 3, 2, 4, 5)) == 7)
+              } @@ ignore +
+              /**
+               * EXERCISE
+               *
+               * Using `List#foldLeft`, compute the minimum element of a list.
+               */
+              test("min") {
+                def min(list: List[Int]): Int = ???
+
+                assertTrue(min(List(1, 7, 3, 2, 0, 4, 5)) == 0)
+              } @@ ignore +
+              /**
+               * EXERCISE
+               *
+               * Using `List#foldLeft`, compute the reverse of a list.
+               */
+              test("reverse") {
+                def reverse[A](list: List[A]): List[A] = ???
+
+                assertTrue(reverse(List(1, 7, 3)) == List(3, 7, 1))
+              } @@ ignore +
+              /**
+               * EXERCISE
+               *
+               * Using `List#foldLeft`, implement a function to partition
+               * a list into those satisfying a predicate, and those not
+               * satisfying the predicate.
+               */
+              test("partition") {
+                def partition[A](list: List[A])(pred: A => Boolean): (List[A], List[A]) = ???
+
+                assertTrue(partition(List(1, 7, 3))(_ < 5) == ((List(1, 3), List(7))))
+              } @@ ignore +
+              /**
+               * EXERCISE
+               *
+               * Using `List#foldLeft`, implement a function to take `n`
+               * elements from a list.
+               */
+              test("take") {
+                def take[A](n: Int, list: List[A]): List[A] = ???
+
+                assertTrue(take(2, List(1, 7, 3)) == List(1, 7))
+              } @@ ignore +
+              /**
+               * EXERCISE
+               *
+               * Using `List#foldLeft`, implement a function to take elements
+               * from a list for as long as a predicate is satisfied.
+               */
+              test("partition") {
+                def takeWhile[A](list: List[A])(pred: A => Boolean): List[A] = ???
+
+                assertTrue(takeWhile(List(1, 7, 3))(_ < 5) == List(1))
+              } @@ ignore
+          }
+      } +
+        suite("performance") {
+
+          /**
+           * EXERCISE
+           *
+           * Investigate and fix the performance problem with this code merely
+           * by changing the collection type used.
+           */
+          test("head/tail") {
+            def sum(values: Seq[Int]): Int =
+              values.headOption match {
+                case None        => 0
+                case Some(value) => value + sum(values.drop(1))
+              }
+
+            assertTrue(sum(0 to 10000) > 0)
+          } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Investigate and fix the performance problem with this code merely
+             * by changing the collection type used.
+             */
+            test("random access") {
+              def sumProduct(left: Seq[Int], right: Seq[Int]): Int = {
+                val length = left.length.max(right.length)
+
+                (0 to length).foldLeft(0) {
+                  case (sum, index) => sum + left(index) * right(index)
+                }
+              }
+
+              assertTrue(sumProduct(List.fill(1000)(2), List.fill(1000)(2)) > 0)
+            } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Investigate and fix the performance problem with this code merely
+             * by changing the collection type used.
+             */
+            test("containment") {
+              def equivalent(left: Seq[Int], right: Seq[Int]): Boolean =
+                left.forall(i => right.contains(i)) &&
+                  right.forall(i => left.contains(i))
+
+              assertTrue(equivalent(List.fill(1000)(2), List.fill(1000)(2)))
+            } @@ ignore
+        }
     }
+}
+
+/**
+ * Scala collections library is a highlight of the Scala standard library,
+ * containing diverse and high-performance immutable data structures
+ * equipped with dozens of helpful operators.
+ *
+ * In this graduation project, you will gain experience using the Scala
+ * collections to implement a graph data structure.
+ */
+object CollectionsGraduation {
+
+  /**
+   * EXERCISE
+   *
+   * Using other Scala collections, choose a representation for a graph
+   * whose nodes are identified by type `V`, and whose edges are
+   * identified by type `E`.
+   */
+  final case class Graph[E, V]() {
+
+    /**
+     * EXERCISE
+     *
+     * Implement a function to retrieve the edges connected to the specified
+     * node.
+     */
+    def edgesOf(v: V): Set[E] = ???
+
+    /**
+     * EXERCISE
+     *
+     * Implement a function to connect the two nodes with the specified edge.
+     */
+    def connect(v1: V, e: E, v2: V): Graph[E, V] = ???
+
+    /**
+     * EXERCISE
+     *
+     * Implement a function to cdisonnect the two nodes from the specified edge.
+     */
+    def disconnect(v1: V, e: E, v2: V): Graph[E, V] = ???
+
+    /**
+     * EXERCISE
+     *
+     * Implement a function to return the set of all nodes in the graph.
+     */
+    def nodes: Set[V] = ???
+
+    /**
+     * EXERCISE
+     *
+     * Implement a function to delete the specified node.
+     */
+    def delete(v: V): Graph[E, V] = ???
+
+    /**
+     * EXERCISE
+     *
+     * Implement a function to fold over the nodes, passing at each node both
+     * a current state value, and the set of edges connected to the node.
+     */
+    def fold[Z](initial: Z)(f: (Z, V, Set[E]) => Z): Z = ???
+  }
+  object Graph {
+    def empty[E, V] = Graph()
+  }
 }

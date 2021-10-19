@@ -407,6 +407,104 @@ object Exceptions extends DefaultRunnableSpec {
 
               assertFails(loadConnectionInfo())
             } @@ ignore
+        } +
+        suite("mixed") {
+
+          /**
+           * EXERCISE
+           *
+           * Find a way to combine an Option and a Try in a way that loses no
+           * information.
+           */
+          test("Option/Try") {
+            import scala.util._
+
+            type User = String
+            type Docs = List[String]
+
+            def getUser: Option[User] = Some("sherlock@holmes.com")
+            def getDocs: Try[Docs]    = Try(List("Doc 1", "Doc 2"))
+
+            def getUserAndDocs = {
+              getUser
+              getDocs
+              ???
+            }
+
+            assertTrue(getUserAndDocs == ???)
+          } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Find a way to combine an Either and an Option in a way that loses
+             * no information.
+             */
+            test("Either/Option") {
+              import scala.util._
+
+              type User = String
+              type Docs = List[String]
+
+              def getUser: Either[String, User] = Right("sherlock@holmes.com")
+              def getDocs: Option[Docs]         = Some(List("Doc 1", "Doc 2"))
+
+              def getUserAndDocs = {
+                getUser
+                getDocs
+                ???
+              }
+
+              assertTrue(getUserAndDocs == ???)
+            } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Find a way to combine an Either and a Try in a way that loses
+             * no information.
+             */
+            test("Either/Try") {
+              import scala.util._
+
+              type User = String
+              type Docs = List[String]
+
+              def getUser: Either[String, User] = Right("sherlock@holmes.com")
+              def getDocs: Try[Docs]            = Try(List("Doc 1", "Doc 2"))
+
+              def getUserAndDocs = {
+                getUser
+                getDocs
+                ???
+              }
+
+              assertTrue(getUserAndDocs == ???)
+            } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Find a way to combine an Either, a Try, and an Option in a way
+             * that loses no information.
+             */
+            test("Either/Try/Option") {
+              import scala.util._
+
+              type User  = String
+              type Docs  = List[String]
+              type Prefs = Map[String, Boolean]
+
+              def getUser: Either[String, User] = Right("sherlock@holmes.com")
+              def getDocs: Try[Docs]            = Try(List("Doc 1", "Doc 2"))
+              def getPrefs: Option[Prefs]       = Some(Map("autosave" -> true))
+
+              def getUserAndDocsAndPrefs = {
+                getUser
+                getDocs
+                getPrefs
+                ???
+              }
+
+              assertTrue(getUserAndDocsAndPrefs == ???)
+            } @@ ignore
         }
     }
 }
