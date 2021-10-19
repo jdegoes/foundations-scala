@@ -294,13 +294,7 @@ object LambdasGraduation extends ZIOAppDefault {
 
   implicit class ParserExtensionMethods[A](self: Parser[A]) {
 
-    /**
-     * EXERCISE
-     *
-     * Implement a function that can change the output of the parser by
-     * applying a function.
-     */
-    def map[B](f: A => B): Parser[B] = ???
+    def map[B](f: A => B): Parser[B] = self.flatMap(a => Parser.succeed(f(a)))
 
     /**
      * EXERCISE
