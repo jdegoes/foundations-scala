@@ -5,6 +5,9 @@
  * allow the compiler help you handle expected error cases, resulting in much
  * more robust and resilient code that better deals with the complexity of
  * life in the cloud.
+ *
+ * In this module, you will learn how to eliminate exceptions from your
+ * application and program using typed return values.
  */
 package net.degoes
 

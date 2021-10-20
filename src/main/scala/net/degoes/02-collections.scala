@@ -295,7 +295,7 @@ object Collections extends DefaultRunnableSpec {
                * Using `List#foldLeft`, implement a function to take elements
                * from a list for as long as a predicate is satisfied.
                */
-              test("partition") {
+              test("takeWhile") {
                 def takeWhile[A](list: List[A])(pred: A => Boolean): List[A] = ???
 
                 assertTrue(takeWhile(List(1, 7, 3))(_ < 5) == List(1))
