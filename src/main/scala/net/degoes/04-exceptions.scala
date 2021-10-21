@@ -16,7 +16,7 @@ import zio.test.TestAspect._
 
 object Exceptions extends DefaultRunnableSpec {
   implicit class FixmeSyntax(any: Any) {
-    def FIXME: Nothing 
+    def FIXME: Nothing
   }
 
   def spec =
