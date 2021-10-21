@@ -15,6 +15,10 @@ import zio.test._
 import zio.test.TestAspect._
 
 object Exceptions extends DefaultRunnableSpec {
+  implicit class FixmeSyntax(any: Any) {
+    def FIXME: Nothing 
+  }
+
   def spec =
     suite("Exceptions") {
       suite("constructors") {
@@ -96,7 +100,7 @@ object Exceptions extends DefaultRunnableSpec {
             /**
              * EXERCISE
              *
-             * Using `Try##map`, use the `parseInt` helper function to implement
+             * Using `Try#map`, use the `parseInt` helper function to implement
              * a correct `Natural.fromString` constructor, which will succeed
              * only if the string is a number, and if that number is non-negative.
              */
@@ -120,7 +124,7 @@ object Exceptions extends DefaultRunnableSpec {
             /**
              * EXERCISE
              *
-             * Using `Either##flatMap`, use the `parseInt` helper function to implement
+             * Using `Either#map`, use the `parseInt` helper function to implement
              * a correct `Natural.fromString` constructor, which will succeed
              * only if the string is a number, and if that number is non-negative.
              */
@@ -214,7 +218,7 @@ object Exceptions extends DefaultRunnableSpec {
             /**
              * EXERCISE
              *
-             * Using `Try##flatMap`, use the `parseInt` helper function to implement
+             * Using `Try#flatMap`, use the `parseInt` helper function to implement
              * a correct `Natural.fromString` constructor, which will succeed
              * only if the string is a number, and if that number is non-negative.
              */
@@ -331,12 +335,7 @@ object Exceptions extends DefaultRunnableSpec {
             def loadConnectionInfo(): ConnectionInfo =
               ConnectionInfo(Config.getHost(), Config.getPort())
 
-            def assertFails(any: => Any) =
-              try {
-                any; assertTrue(false)
-              } catch { case _: Throwable => assertTrue(true) }
-
-            assertFails(loadConnectionInfo())
+            assertTrue(loadConnectionInfo().FIXME)
           } @@ ignore +
             /**
              * EXERCISE
@@ -367,12 +366,7 @@ object Exceptions extends DefaultRunnableSpec {
               def loadConnectionInfo(): ConnectionInfo =
                 ConnectionInfo(Config.getHost(), Config.getPort())
 
-              def assertFails(any: => Any) =
-                try {
-                  any; assertTrue(false)
-                } catch { case _: Throwable => assertTrue(true) }
-
-              assertFails(loadConnectionInfo())
+              assertFails(loadConnectionInfo().FIXME)
             } @@ ignore +
             /**
              * EXERCISE
@@ -403,12 +397,7 @@ object Exceptions extends DefaultRunnableSpec {
               def loadConnectionInfo(): ConnectionInfo =
                 ConnectionInfo(Config.getHost(), Config.getPort())
 
-              def assertFails(any: => Any) =
-                try {
-                  any; assertTrue(false)
-                } catch { case _: Throwable => assertTrue(true) }
-
-              assertFails(loadConnectionInfo())
+              assertFails(loadConnectionInfo().FIXME)
             } @@ ignore
         } +
         suite("mixed") {
