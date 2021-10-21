@@ -101,7 +101,7 @@ object Nulls extends DefaultRunnableSpec {
             def firstOf[A](left: Option[A], right: Option[A]): Option[A] =
               ???
 
-            assertTrue(firstOf(None, Some(24)) == Some(42))
+            assertTrue(firstOf(None, Some(24)) == Some(24))
           } @@ ignore +
           /**
            * EXERCISE
