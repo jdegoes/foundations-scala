@@ -153,49 +153,49 @@ object Nulls extends DefaultRunnableSpec {
           /**
            * EXERCISE
            *
-           * Rewrite the following code to use `Option` instead of nulls.
+           * Create a null-safe version of System.property methods.
            */
-          test("example 1") {
-            final case class Address(street: String)
-            final case class Profile(address: Address)
-            final case class User(id: String, profile: Profile)
+          test("property") {
+            object SafeProperty {
+              def getProperty(name: String): Option[String] = ???
 
-            val user1 =
-              User("Sherlock Holmes", null)
-            val user2 =
-              User("Sherlock Holmes", Profile(null))
-            val user3 =
-              User("Sherlock Holmes", Profile(Address(null)))
+              def getIntProperty(name: String): Option[Int] = ???
 
-            def getStreet(user: User): String =
-              if (user == null) null
-              else if (user.profile == null) null
-              else if (user.profile.address == null) null
-              else if (user.profile.address.street == null) null
-              else user.profile.address.street
+              def getBoolProperty(name: String): Option[Boolean] = ???
+            }
 
-            def assertFails(value: => Any) = assertTrue(value == null)
-
-            assertFails(getStreet(user1)) &&
-            assertFails(getStreet(user2)) &&
-            assertFails(getStreet(user3))
+            assertTrue(SafeProperty.getProperty("foo.bar") == None)
           } @@ ignore +
             /**
              * EXERCISE
              *
-             * Create a null-safe version of System.property methods.
+             * Rewrite the following code to use `Option` instead of nulls.
              */
-            test("property") {
-              object SafeProperty {
-                def getProperty(name: String): Option[String] = ???
+            test("example 1") {
+              final case class Address(street: String)
+              final case class Profile(address: Address)
+              final case class User(id: String, profile: Profile)
 
-                def getIntProperty(name: String): Option[Int] = ???
+              val user1 =
+                User("Sherlock Holmes", null)
+              val user2 =
+                User("Sherlock Holmes", Profile(null))
+              val user3 =
+                User("Sherlock Holmes", Profile(Address(null)))
 
-                def getBoolProperty(name: String): Option[Boolean] = ???
-              }
+              def getStreet(user: User): String =
+                if (user == null) null
+                else if (user.profile == null) null
+                else if (user.profile.address == null) null
+                else if (user.profile.address.street == null) null
+                else user.profile.address.street
 
-              assertTrue(SafeProperty.getProperty("foo.bar") == None)
-            }
+              def assertFails(value: => Any) = assertTrue(value == null)
+
+              assertFails(getStreet(user1)) &&
+              assertFails(getStreet(user2)) &&
+              assertFails(getStreet(user3))
+            } @@ ignore
         }
     }
 }

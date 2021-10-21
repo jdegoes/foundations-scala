@@ -13,6 +13,8 @@ package net.degoes
 import zio._
 import zio.test._
 import zio.test.TestAspect._
+import java.io.IOException
+import zio.test.environment.TestConsole
 
 object Effects extends DefaultRunnableSpec {
   def spec =
@@ -68,20 +70,95 @@ object Effects extends DefaultRunnableSpec {
           } @@ ignore
       } +
         suite("operators") {
+
+          /**
+           * EXERCISE
+           *
+           * Using `ZIO#map`, map the success value of the `Console.readLine`
+           * effect into an integer representing the length of the line of
+           * text that is read from the console.
+           */
           test("map") {
-            assertTrue(true)
+            val readInt: IO[IOException, Int] = ???
+
+            for {
+              _   <- TestConsole.feedLines("Sherlock")
+              int <- readInt
+            } yield assertTrue(int == 8)
           } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Using `ZIO#mapError`, turn the integer failure of the provided
+             * effect into a string representation of the integer.
+             */
             test("mapError") {
-              assertTrue(true)
+              val errorCode = 42
+
+              val failure = IO.fail(errorCode)
+
+              val mappedFailure: IO[String, Nothing] = failure.mapError(???)
+
+              for {
+                value <- mappedFailure.flip
+              } yield assertTrue(value == "42")
             } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Using `ZIO#zip`, sequentially combine the provided two effects.
+             */
             test("zip") {
-              assertTrue(true)
+              val first = Console.printLine("Sherlock")
+              val last  = Console.printLine("Holmes")
+
+              val _ = first
+              val _ = last
+
+              val zipped: ZIO[Has[Console], IOException, Unit] = ???
+
+              for {
+                _      <- zipped
+                output <- TestConsole.output
+              } yield assertTrue(output == Vector("Sherlock\n", "Holmes\n"))
             } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Using `ZIO.*>`, sequentially zip the provided two effects together,
+             * but return the success value of the right hand side.
+             */
             test("*>") {
-              assertTrue(true)
+              val first  = ZIO.succeed(42)
+              val second = ZIO.succeed("Roger Rabbit")
+
+              val _ = first
+              val _ = second
+
+              val zipLeft: UIO[String] = ???
+
+              for {
+                result <- zipLeft
+              } yield assertTrue(result == "Roger Rabbit")
             } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Using `ZIO.<*`, sequentially zip the provided two effects together,
+             * but return the success value of the left hand side.
+             */
             test("<*") {
-              assertTrue(true)
+              val first  = ZIO.succeed(42)
+              val second = ZIO.succeed("Roger Rabbit")
+
+              val _ = first
+              val _ = second
+
+              val zipLeft: UIO[Int] = ???
+
+              for {
+                result <- zipLeft
+              } yield assertTrue(result == 42)
             } @@ ignore +
             test("flatMap") {
               assertTrue(true)
