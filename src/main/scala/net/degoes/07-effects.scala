@@ -203,10 +203,10 @@ object Effects extends DefaultRunnableSpec {
              */
             test("foldZIO") {
               def effect: ZIO[Any, Nothing, String] =
-                ZIO.fail("Failure")
+                ZIO.fail("Failure").FIXME
 
               for {
-                value <- effect.FIXME
+                value <- effect
               } yield assertTrue(value == "Did it!")
             } @@ ignore +
             /**
@@ -227,6 +227,49 @@ object Effects extends DefaultRunnableSpec {
               for {
                 list <- iterationResult
               } yield assertTrue(list == List("a", "a", "a"))
+            } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Use ZIO to allow combining lots of different effect types.
+             */
+            test("mixed") {
+              import scala.util._
+
+              final case class UnknownUserError(message: String) extends Exception(message)
+              case class NoPreferencesError()                    extends Exception("Preferences could not be loaded")
+
+              type User  = String
+              type Docs  = List[String]
+              type Prefs = Map[String, Boolean]
+
+              def getUser(): Either[String, User] = Right("sherlock@holmes.com")
+              def getDocs(): Try[Docs]            = Try(List("Doc 1", "Doc 2"))
+              def getPrefs(): Option[Prefs]       = Some(Map("autosave" -> true))
+
+              def getUserZIO: IO[UnknownUserError, User] = {
+                getUser()
+                ???
+              }
+
+              def getDocsZIO: IO[Throwable, Docs] = {
+                getDocs()
+                ???
+              }
+
+              def getPrefsZIO: IO[NoPreferencesError, Prefs] = {
+                getPrefs()
+                ???
+              }
+
+              for {
+                user  <- getUserZIO
+                docs  <- getDocsZIO
+                prefs <- getPrefsZIO
+              } yield assertTrue(
+                user == "sherlock@holmes.com" && docs == List("Doc 1", "Doc 2") && prefs == Map("autosave" -> true)
+              )
+
             } @@ ignore
         } +
         suite("control flow") {
@@ -243,10 +286,10 @@ object Effects extends DefaultRunnableSpec {
               ref.update("All work and no play makes Jack a dull boy" :: _)
 
             for {
-              accum  <- Ref.make[List.empty[String]]
+              accum  <- Ref.make[List[String]](Nil)
               worker = makeWorker(accum)
               fiber  <- worker.fork
-              _      <- accum.get.retryUntil(_.length > 10) *> fiber.interrupt
+              _      <- accum.get.repeatUntil(_.length > 10) *> fiber.interrupt
               result <- accum.get
             } yield assertTrue(result.length > 10)
           } @@ ignore +

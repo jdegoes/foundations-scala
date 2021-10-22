@@ -15,10 +15,6 @@ import zio.test._
 import zio.test.TestAspect._
 
 object Exceptions extends DefaultRunnableSpec {
-  implicit class FixmeSyntax(any: Any) {
-    def FIXME: Nothing
-  }
-
   def spec =
     suite("Exceptions") {
       suite("constructors") {
@@ -366,7 +362,7 @@ object Exceptions extends DefaultRunnableSpec {
               def loadConnectionInfo(): ConnectionInfo =
                 ConnectionInfo(Config.getHost(), Config.getPort())
 
-              assertFails(loadConnectionInfo().FIXME)
+              assertTrue(loadConnectionInfo().FIXME)
             } @@ ignore +
             /**
              * EXERCISE
@@ -397,7 +393,7 @@ object Exceptions extends DefaultRunnableSpec {
               def loadConnectionInfo(): ConnectionInfo =
                 ConnectionInfo(Config.getHost(), Config.getPort())
 
-              assertFails(loadConnectionInfo().FIXME)
+              assertTrue(loadConnectionInfo().FIXME)
             } @@ ignore
         } +
         suite("mixed") {

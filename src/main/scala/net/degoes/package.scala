@@ -2,7 +2,7 @@ package net
 
 package object degoes {
   implicit class FixmeSyntax(any: Any) {
-    def FIXME: Nothing
+    def FIXME: Nothing = ???
   }
 
   val Dictionary = List(

@@ -54,7 +54,7 @@ trait EmailAPI {
  * Create a command-line, menu-driven application which allows the user to
  * search for and book flights.
  */
-object AppGraduation extends ZIOAppDefault {
+object AppsGraduation extends ZIOAppDefault {
   def run =
     Console.printLine("The End!")
 }
