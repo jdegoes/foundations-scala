@@ -1,12 +1,11 @@
 /**
  * In functional Scala, programs do not interact with the external world.
- * Rather, they build blueprints, which describe how to process intput
- * and produce output in the external world. This separation between
- * model, which describes _what_ to do, and execution, which describes
- * _how_ to do it, results in increased expressive power, which is why
- * functional programming is revolutionizing the design of reactive
- * applications, which are difficult to build correctly without a functional
- * approach.
+ * Rather, they construct "blueprints"", which describe how to process input
+ * and produce output in the external world. This separation between model,
+ * which describes _what_ to do, and execution, which describes _how_ to do it,
+ * results in increased expressive power, which is why functional programming
+ * is revolutionizing the design of reactive applications, which are difficult
+ * to build correctly without a functional approach.
  */
 package net.degoes
 
@@ -160,31 +159,155 @@ object Effects extends DefaultRunnableSpec {
                 result <- zipLeft
               } yield assertTrue(result == 42)
             } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Using `ZIO#flatMap`, `Console.printLine`, and
+             * `Console.readLine`, write a program that prints out,
+             * "What is your name?", then reads the name of the user, and
+             * finally, prints out, "Hello, <name>!", where <name> is the
+             * name of the user.
+             */
             test("flatMap") {
-              assertTrue(true)
+
+              def program: ZIO[Has[Console], IOException, Unit] = ???
+
+              val expected =
+                Vector("What is your name?\n", "Sherlock\n", "Hello, Sherlock!\n")
+
+              for {
+                _      <- TestConsole.feedLines("Sherlock")
+                _      <- program
+                output <- TestConsole.output
+              } yield assertTrue(output == expected)
             } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Using `ZIO.catchAll` and `ZIO.succeed`, recover from the failed
+             * effect by succeeding with the string "Recovered!"
+             */
             test("catchAll") {
-              assertTrue(true)
+              def effect: ZIO[Any, Nothing, String] =
+                ZIO.fail("Uh oh!").FIXME
+
+              for {
+                value <- effect
+              } yield assertTrue(value == "Recovered!")
             } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Using `ZIO#foldZIO`, handle both error and success cases for
+             * the provided effect, producing the constant string "Did it!".
+             */
             test("foldZIO") {
-              assertTrue(true)
+              def effect: ZIO[Any, Nothing, String] =
+                ZIO.fail("Failure")
+
+              for {
+                value <- effect.FIXME
+              } yield assertTrue(value == "Did it!")
             } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Using recursion, implement the `iterate` function so that it
+             * iterates on the state value for as long as the predicate
+             * returns true (but no longer).
+             */
             test("recursion") {
-              assertTrue(true)
+              def iterate[R, E, S](start: S)(pred: S => Boolean)(f: S => ZIO[R, E, S]): ZIO[R, E, S] = ???
+
+              val iterationResult =
+                iterate(List.empty[String])(_.length < 3) { list =>
+                  ZIO.succeed("a" :: list)
+                }
+
+              for {
+                list <- iterationResult
+              } yield assertTrue(list == List("a", "a", "a"))
             } @@ ignore
         } +
         suite("control flow") {
+
+          /**
+           * EXERCISE
+           *
+           * Using `ZIO#forever`, make the worker run forever so that it
+           * will continuously accumulate results until stopped.
+           */
           test("forever") {
-            assertTrue(true)
+
+            def makeWorker(ref: Ref[List[String]]) =
+              ref.update("All work and no play makes Jack a dull boy" :: _)
+
+            for {
+              accum  <- Ref.make[List.empty[String]]
+              worker = makeWorker(accum)
+              fiber  <- worker.fork
+              _      <- accum.get.retryUntil(_.length > 10) *> fiber.interrupt
+              result <- accum.get
+            } yield assertTrue(result.length > 10)
           } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Using `ZIO#eventually`, make the worker repeat until it
+             * succeeds.
+             */
             test("eventually") {
-              assertTrue(true)
+              def makeWorker(ref: Ref[Int]) =
+                for {
+                  count <- ref.updateAndGet(_ + 1)
+                  _     <- if (count < 10) ZIO.fail("Uh oh!") else ZIO.succeed(())
+                } yield "Success!"
+
+              for {
+                ref    <- Ref.make(0)
+                worker = makeWorker(ref)
+                result <- worker
+              } yield assertTrue(result == "Success!")
             } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Using `ZIO#repeatN`, repeat the provided effect for 5 times.
+             */
             test("repeatN") {
-              assertTrue(true)
+
+              for {
+                ref    <- Ref.make(0)
+                effect = ref.update(_ + 1)
+                _      <- effect
+                result <- ref.get
+              } yield assertTrue(result == 6)
             } @@ ignore +
+            /**
+             * EXERCISE
+             *
+             * Using `ZIO.whenZIO`, set the provided ref to `true` whenever the
+             * `continue` effect succeeds with `true`.
+             */
             test("whenZIO") {
-              assertTrue(true)
+              def isYes(line: String): Boolean =
+                line.toLowerCase match {
+                  case "y" | "yes" => true
+                  case _           => false
+                }
+
+              val continue =
+                for {
+                  _    <- Console.printLine("Do you want to continue (y/n)?")
+                  line <- Console.readLine
+                } yield isYes(line)
+
+              for {
+                ref    <- Ref.make(false)
+                _      <- TestConsole.feedLines("y")
+                _      <- continue
+                result <- ref.get
+              } yield assertTrue(result)
             } @@ ignore
         }
     }
